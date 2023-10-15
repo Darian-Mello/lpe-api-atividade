@@ -21,7 +21,7 @@ const addAcaoDB = async (body) => {
             returning codigo, nome, descricao, atividade_id`,
         [nome, descricao, atividade]);
         const acao = results.rows[0];
-        return new Acao(acao.codigo, acao.nome, acao.descricao, acao.atividade, "");
+        return new Acao(acao.codigo, acao.nome, acao.descricao, atividade, "cavalo");
     } catch (err) {
         throw "Erro ao inserir o acao: " + err;
     }    
@@ -29,15 +29,15 @@ const addAcaoDB = async (body) => {
 
 const updateAcaoDB = async (body) => {
     try {   
-        const { codigo, nome, descricao, quantidade_estoque, ativo, valor, data_cadastro, atividade }  = body; 
+        const { codigo, nome, descricao, atividade }  = body; 
         const results = await pool.query(`UPDATE acao set nome = $2 , descricao = $3, atividade_id = $4 where codigo = $1 
-        returning codigo, nome, descricao, atividade_id`,
+        returning codigo, nome, descricao`,
         [codigo, nome, descricao, atividade]);        
         if (results.rowCount == 0){
             throw `Nenhum registro encontrado com o código ${codigo} para ser alterado`;
         }
         const acao = results.rows[0];
-        return new Acao(acao.codigo, acao.nome, acao.descricao, acao.atividade, "");
+        return new Acao(acao.codigo, acao.nome, acao.descricao, atividade, "");
     } catch (err) {
         throw "Erro ao alterar o acao: " + err;
     }      
